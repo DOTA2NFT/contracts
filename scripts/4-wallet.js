@@ -7,24 +7,24 @@ const hre = require("hardhat");
 const { sleep } = require("./utils/sleep");
 
 async function main() {
-  // We get the contract to deploy
-  const HeroManager = await hre.ethers.getContractFactory("HeroManager");
-  const heroManager = await HeroManager.deploy();
+  const HeroInfinityWallet = await hre.ethers.getContractFactory(
+    "HeroInfinityWallet"
+  );
+  const wallet = await HeroInfinityWallet.deploy();
+  await wallet.deployed();
 
-  await heroManager.deployed();
+  console.log("HeroInfinityWallet deployed to: " + wallet.address);
 
   await sleep(60000);
 
   try {
     await hre.run("verify:verify", {
-      address: heroManager.address,
-      contract: "contracts/game/HeroManager.sol:HeroManager",
+      address: wallet.address,
+      contract: "contracts/HeroInfinityWallet.sol:HeroInfinityWallet",
     });
   } catch (err) {
     console.log(err);
   }
-
-  console.log("HeroManager deployed to: " + heroManager.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
